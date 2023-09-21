@@ -10,5 +10,7 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+database connection required
+
 #### There is a File "DjangoMyPathAPI.postman_collection" which has Postman Collection You can import this file in your postman to test this API
 
