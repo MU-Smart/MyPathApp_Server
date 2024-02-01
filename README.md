@@ -11,17 +11,17 @@ python manage.py runserver<br />
 
 
 
+<br />
+## Requirements<br />
 
-## Requirements
-
-asgiref==3.5.0
-Django==4.0.3
-django-cors-headers==3.11.0
-django-dotenv==1.4.2
-djangorestframework==3.13.1
-djangorestframework-simplejwt==5.1.0
-PyJWT==2.3.0
-pytz==2021.3
-sqlparse==0.4.2
-tzdata==2021.5
+asgiref==3.5.0<br />
+Django==4.0.3<br />
+django-cors-headers==3.11.0<br />
+django-dotenv==1.4.2<br />
+djangorestframework==3.13.1<br />
+djangorestframework-simplejwt==5.1.0<br />
+PyJWT==2.3.0<br />
+pytz==2021.3<br />
+sqlparse==0.4.2<br />
+tzdata==2021.5<br />
 
