@@ -1,6 +1,6 @@
-## Django REST Framework Complete Authentication API
+## Django REST Framework Complete Authentication API <br />
 
-## To Run this Project follow below:
+## To Run this Project follow below: <br />
 
 #bash
 mkvirtualenv authenv
