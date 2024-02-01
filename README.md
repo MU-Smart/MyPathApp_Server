@@ -2,12 +2,12 @@
 
 ## To Run this Project follow below: <br />
 
-#bash
-mkvirtualenv authenv
-pip install -r requirements.txt
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
+#bash<br />
+mkvirtualenv authenv<br />
+pip install -r requirements.txt<br />
+python manage.py makemigrations<br />
+python manage.py migrate<br />
+python manage.py runserver<br />
 
 
 
