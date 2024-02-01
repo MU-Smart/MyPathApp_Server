@@ -12,7 +12,6 @@ python manage.py runserver
 
 
 
-
 ## Requirements
 
 asgiref==3.5.0
