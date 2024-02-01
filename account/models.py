@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 
 class SenData(models.Model):
@@ -28,112 +28,64 @@ class SessionData(models.Model):
     st = models.CharField(max_length=25)
     et = models.CharField(max_length=20)
     sbt = models.IntegerField()
-    pp = models.CharField(max_length=25, default="-1")
+    wcId = models.CharField(max_length=20)
+    sq1 = models.CharField(max_length=20)
+    sq2 = models.CharField(max_length=20)
+    sq3 = models.CharField(max_length=20)
+    eq1 = models.CharField(max_length=20)
+    eq2 = models.CharField(max_length=20)
     v = models.CharField(max_length=25, default="old")
 
     def __str__(self):
         return self.t
 
-#  Custom User Manager
-class UserManager(BaseUserManager):
-  def create_user(self, email, name, tc, height, weight, gender, age, type_wc, number_w, wheel_type, tire_mat, wc_wdt, wc_ht, password=None, password2=None):
-      """
-      Creates and saves a User with the given email, name, tc and password.
-      """
-      if not email:
-          raise ValueError('User must have an email address')
 
-      user = self.model(
-          email=self.normalize_email(email),
-          name=name,
-          tc=tc,
-          height=height, 
-          weight=weight,
-          gender=gender,
-          age=age,
-          type_wc=type_wc,
-          number_w=number_w,
-          wheel_type=wheel_type,
-          tire_mat=tire_mat,
-          wc_wdt=wc_wdt,
-          wc_ht=wc_ht,
-      )
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, name, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        extra_fields.setdefault('is_active', True)
+        user = self.model(email=email, name=name, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-      user.set_password(password)
-      user.save(using=self._db)
-      return user
-
-  def create_superuser(self, email, name, tc, height, weight, gender, age, type_wc, number_w, wheel_type, tire_mat, wc_wdt, wc_ht, password=None):
-      """
-      Creates and saves a superuser with the given email, name, tc and password.
-      """
-      user = self.create_user(
-          email,
-          password=password,
-          name=name,
-          tc=tc,
-          height=height, 
-          weight=weight,
-          gender=gender,
-          age=age,
-          type_wc=type_wc,
-          number_w=number_w,
-          wheel_type=wheel_type,
-          tire_mat=tire_mat,
-          wc_wdt=wc_wdt,
-          wc_ht=wc_ht,
-      )
-      user.is_admin = True
-      user.save(using=self._db)
-      return user
+    def create_superuser(self, email, name, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(email, name, password, **extra_fields)
 
 
-#  Custom User Model
-class User(AbstractBaseUser):
-  email = models.EmailField(
-      verbose_name='Email',
-      max_length=255,
-      unique=True,
-  )
-  name = models.CharField(max_length=200)
-  tc = models.BooleanField()
-  height = models.CharField(max_length=20)
-  weight = models.CharField(max_length=20)
-  gender = models.CharField(max_length=20)
-  age = models.CharField(max_length=20)
-  type_wc = models.CharField(max_length=20)
-  number_w = models.CharField(max_length=20)
-  wheel_type = models.CharField(max_length=20)
-  tire_mat = models.CharField(max_length=20)
-  wc_wdt = models.CharField(max_length=20)
-  wc_ht = models.CharField(max_length=20)
-  is_active = models.BooleanField(default=True)
-  is_admin = models.BooleanField(default=False)
-  created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=100)
+    com_num = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
 
-  objects = UserManager()
+    objects = CustomUserManager()
 
-  USERNAME_FIELD = 'email'
-  REQUIRED_FIELDS = ['name', 'tc']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
 
-  def __str__(self):
-      return self.email
-
-  def has_perm(self, perm, obj=None):
-      "Does the user have a specific permission?"
-      # Simplest possible answer: Yes, always
-      return self.is_admin
-
-  def has_module_perms(self, app_label):
-      "Does the user have permissions to view the app `app_label`?"
-      # Simplest possible answer: Yes, always
-      return True
-
-  @property
-  def is_staff(self):
-      "Is the user a member of staff?"
-      # Simplest possible answer: All admins are staff
-      return self.is_admin
+    def __str__(self):
+        return self.email
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    height = models.CharField(max_length=20, blank=True)
+    weight = models.CharField(max_length=20, blank=True)
+    gender = models.CharField(max_length=20, blank=True)
+    age = models.CharField(max_length=20, null=True, blank=True)
+
+class Wheelchair(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    type_wc = models.CharField(max_length=20, blank=True)
+    wc_identify = models.CharField(max_length=20)
+    number_w = models.IntegerField(null=True, blank=True)
+    d_type = models.CharField(max_length=20, blank=True)
+    tire_mat = models.CharField(max_length=20, blank = True)
+    wc_wdt = models.IntegerField(null=True, blank=True)
+    wc_ht = models.IntegerField(null=True, blank=True)

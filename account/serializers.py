@@ -5,27 +5,58 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
 
+
+from rest_framework import serializers
+from .models import User, Profile, Wheelchair
+
+
+
+class WheelchairSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wheelchair
+        fields = ('type_wc', 'wc_identify', 'number_w',
+                  'd_type', 'tire_mat', 'wc_wdt', 'wc_ht')
+
+    # def validate(self, attrs):
+    #   userid = attrs.get('user_id')
+    #   user = User.objects.get(id=userid)
+
+
+    #   return attrs
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('height', 'weight', 'gender', 'age')
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
-  # We are writing this becoz we need confirm password field in our Registratin Request
-  password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
-  class Meta:
-    model = User
-    fields=['email', 'name', 'password', 'password2', 'tc','height', 'weight', 'gender', 'age', 'type_wc', 'number_w', 'wheel_type', 'tire_mat', 'wc_wdt', 'wc_ht']
-    #fields=['email', 'name', 'password', 'password2', 'tc', 'height']
-    extra_kwargs={
-      'password':{'write_only':True}
-    }
+    # Nested serializer for Profile and Wheelchair model
+    profile = ProfileSerializer(required=True)
+    wheelchair = WheelchairSerializer(required=True)
+    password = serializers.CharField(write_only=True)
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password', 'name', 'com_num', 'is_active', 'is_admin', 'profile', 'wheelchair')
+        extra_kwargs = {
+            'is_active': {'read_only': True},
+            'is_admin': {'read_only': False},
+        }
 
-  # Validating Password and Confirm Password while Registration
-  def validate(self, attrs):
-    password = attrs.get('password')
-    password2 = attrs.get('password2')
-    if password != password2:
-      raise serializers.ValidationError("Password and Confirm Password doesn't match")
-    return attrs
-
-  def create(self, validate_data):
-    return User.objects.create_user(**validate_data)
+    def create(self, validated_data):
+      try:
+        profile_data = validated_data.pop('profile')
+        wheelchair_data = validated_data.get('wheelchair')
+        password = validated_data.pop('password')
+        user_instance = User.objects.create(**validated_data)
+        user_instance.set_password(password)
+        Profile.objects.create(user=user_instance, **profile_data)
+        Wheelchair.objects.create(user=user_instance, **wheelchair_data)
+        user_instance.save()
+        return user_instance
+      except Exception as e:
+        print("==== Exception raised in serializer ====")
+        print(e)
 
 class UserLoginSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(max_length=255)
@@ -41,10 +72,10 @@ class UserSensorDataSerializer(serializers.ModelSerializer):
 class UserSessionDataSerializer(serializers.ModelSerializer):
   class Meta:
     model = SessionData
-    fields = ['uid', 'st', 'et', 'sbt', 'pp', 'v']
+    fields = ['uid', 'st', 'et', 'sbt', 'wcId', 'sq1', 'sq2', 'sq3', 'eq1', 'eq2', 'v']
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserIdInfoSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = ['id', 'email', 'name']
