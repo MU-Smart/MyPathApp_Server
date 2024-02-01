@@ -1,13 +1,13 @@
-## Django REST Framework Complete Authentication API\n
+## Django REST Framework Complete Authentication API
 
-## To Run this Project follow below:\n
+## To Run this Project follow below:
 
-#bash\n
-mkvirtualenv authenv\n
-pip install -r requirements.txt\n
-python manage.py makemigrations\n
-python manage.py migrate\n
-python manage.py runserver\n
+#bash
+mkvirtualenv authenv
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
 
 
 
