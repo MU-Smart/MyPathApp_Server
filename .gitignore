@@ -1,0 +1,46 @@
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore static files directory
+/static/
+
+# Ignore media files directory
+/media/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore local settings
+settings_miami.py
+settings_umbc_local.py
+
+# Ignore environment files
+.env
+
+# Ignore logs
+/logs/
+
+# Ignore virtual environment
+venv/
+
+# Ignore generated migration files
+/migrations/
+
+# Ignore secret key
+secret_key.txt
+
+# Ignore development settings
+development_settings/
+
+# Ignore IDE files
+*.pycharm
+*.vscode
+*.idea/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
