@@ -8,40 +8,40 @@ To run this project, follow these steps:
 ### 1. Create a Virtual Environment <br/>
 Creating a virtual environment helps to manage dependencies for your project. Run the following command to create a virtual environment named authenv: <br/>
 
-  ```bash
-  mkvirtualenv authenv
+   ```bash
+   mkvirtualenv authenv
 
-<br/>
+
 ### 2. Activate the Virtual Environment <br/>
 activate the newly created virtual environment <br/>
-  ```bash
-  source authenv/bin/activate
+   ```bash
+   source authenv/bin/activate
 
-<br/>
+
 ### 3. Install Required Packages <br/>
 Once the virtual environment is activated, install the necessary packages listed in requirements.txt: <br/>
 
-  ```bash
-  pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
 
-<br/>
+
 ### 4. Apply Migrations
 Before running the server, apply the migrations to set up your database schema: <br/>
 
-  ```bash
-  python manage.py makemigrations
-  python manage.py migrate
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
 
-<br/>
+
 ### 5. Run the Development Server
 Start the Django development server to serve your application: <br/>
 
-  ```bash
-  python manage.py runserver
+   ```bash
+   python manage.py runserver
 
 
 ### Requirements
-<br/>
+
 Ensure you have the following packages installed, as listed in requirements.txt: <br/>
 
 asgiref==3.5.0 <br/>
