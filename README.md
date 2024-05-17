@@ -2,7 +2,7 @@
 
 ## To Run this Project follow below: <br />
 
-#bash<br />
+```bash
 mkvirtualenv authenv<br />
 pip install -r requirements.txt<br />
 python manage.py makemigrations<br />
