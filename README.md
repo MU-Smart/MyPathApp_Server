@@ -7,15 +7,15 @@ To run this project, follow these steps:
 <br>
 ### 1. Create a Virtual Environment
 Creating a virtual environment helps to manage dependencies for your project. Run the following command to create a virtual environment named authenv:
-<br>
-   ```bash
-   mkvirtualenv authenv
+
+    ```bash
+    mkvirtualenv authenv
 
 
 ### 2. Activate the Virtual Environment
 <br>
 activate the newly created virtual environment
-   ```bash
-   source authenv/bin/activate
+    ```bash
+    source authenv/bin/activate
 
 
