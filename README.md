@@ -14,7 +14,7 @@ Creating a virtual environment helps to manage dependencies for your project. Ru
 
 ### 2. Activate the Virtual Environment
 <br>
-activate the newly created virtual environment
+activate the newly created virtual environment <br>
     ```bash
     source authenv/bin/activate
 
