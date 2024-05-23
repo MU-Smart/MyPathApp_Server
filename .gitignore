@@ -26,6 +26,7 @@ settings_umbc_local.py
 
 # Ignore virtual environment
 venv/
+authenv/
 
 # Ignore generated migration files
 /migrations/
