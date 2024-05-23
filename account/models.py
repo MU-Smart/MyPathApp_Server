@@ -54,15 +54,23 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(email, name, password, **extra_fields)
 
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email, name, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100)
     com_num = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)  # Ensure this field is present
+    tc = models.BooleanField(default=True)  # Add this line
     is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)  # Add this field if not present
 
     objects = CustomUserManager()
 
